@@ -18,6 +18,11 @@ const useWeatherService = () => {
         return _transformWeather(res);
     }
 
+    const getFullWeather = async (city) => {
+        const res = await request(`${_apiBase}onecall?lat=${city.lat}&lon=${city.lon}&exclude=minutely,daily&units=metric&${_apiKey}`);
+        return _transformWeatherCity(res);
+    }
+
     const getWeathers = async () => {
         const res = await request(`${_apiBase}group?id=${cities}&units=metric&${_apiKey}`);
         return res.list.map(_transformWeather)
@@ -31,11 +36,31 @@ const useWeatherService = () => {
             pressure: city.main.pressure/10,
             humidity: city.main.humidity,
             weather: city.weather[0].main,
-            icon: `http://openweathermap.org/img/wn/${city.weather[0].icon}@4x.png`
+            icon: `http://openweathermap.org/img/wn/${city.weather[0].icon}@4x.png`,
+            lon: city.coord.lon,
+            lat: city.coord.lat
         }
     }
 
-    return {loading, error, getWeather, getWeathers, clearError}
+    const _transformWeatherCity = (city) => {
+        return {
+            temp: Math.round(city.current.temp),
+            feels: Math.round(city.current.feels_like),
+            sunrise: city.current.sunrise,
+            sunset: city.current.sunset,
+            timezone_offset: city.timezone_offset,
+            current_time: city.current.dt,
+            wind_speed: city.current.wind_speed,
+            wind_deg: city.current.wind_deg,
+            pressure: city.current.pressure/10,
+            humidity: city.current.humidity,
+            weather: city.current.weather[0].main,
+            icon: `http://openweathermap.org/img/wn/${city.current.weather[0].icon}@4x.png`,
+            hourly: city.hourly
+        }
+    }
+
+    return {loading, error, getWeather, getFullWeather, getWeathers, clearError}
 }
 
 export default useWeatherService;

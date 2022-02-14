@@ -1,5 +1,17 @@
+* {
+    box-sizing: border-box;
+}
+
 .container {
     max-width: 1400px;
-    margin: 100px auto;
+    margin: 0 auto;
     padding: 0 20px;
+}
+
+.bannerImg {
+    display: block;
+    margin: 20px auto;
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
 }

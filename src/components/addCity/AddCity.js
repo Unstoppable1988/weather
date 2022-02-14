@@ -6,11 +6,19 @@ const AddCity = ({getCity, showError}) => {
 
     const [city, setCity] = useState("");
 
+    const onSubmit = (e) => {
+        getCity(e, city);
+        setCity("")
+    }
+
     return (
-        <form className="addCity" onSubmit={(e) => getCity(e, city)}>
-            <input type="text" name="city" placeholder="Type city here" value={city} onChange={(e) => setCity(e.target.value)}/>
-            <input type="submit" value={"Add city"}/>
-        </form>
+        <div className="addCityCont">
+            <form className="addCity" onSubmit={(e) => onSubmit(e)}>
+                <input type="text" name="city" placeholder="Type city here" value={city} onChange={(e) => setCity(e.target.value)}/>
+                <input type="submit" value={"Add city"}/>
+            </form>
+            <p>{showError}</p>
+        </div>
     )
 }
 
